@@ -27,7 +27,7 @@ public class StreamTest {
     @Test
     public void shouldReturnSquareRoot() {
         List<Integer> numbers = Arrays.asList(1, 4, 16, 256);
-        List<Integer> squares = Stream8.returnSquareRoot(numbers);
+        List<Integer> squares = Stream8.returnSquareRoot(numbers);//zapis z rozwiązania, o co chodzi?
         assertThat(squares, is(equalTo(Arrays.asList(1, 2, 4, 16))));
     }
 
@@ -62,7 +62,7 @@ public class StreamTest {
     @Test
     public void shouldSumIntegersInCollection() {
         List<Integer> integers = asList(1, 2, 3, 4, 5);
-        Integer result = Stream8.sum(integers);
+        Integer result = Stream8.sum(integers);//zobaczyć zapis z rozwiazania
         assertThat(result, equalTo(1 + 2 + 3 + 4 + 5));
     }
 
@@ -83,7 +83,7 @@ public class StreamTest {
     @Test
     public void shouldReturnDistinctLetters() {
         List<String> names = asList("Homer Simpson", "Marge Simpson", "Bart Simpson", "Kent Brockman");
-        List<String> result = Stream8.getDistinctLetters(names);
+        List<String> result = Stream8.getDistinctLetters(names);//flatmap Arrays.stream(x) - sumuje distinct letters?
         assertThat(result, equalTo(Arrays.asList("H", "o", "m", "e", "r", " " , "S", "i", "p", "s", "n", "M", "a", "g", "B", "t", "K", "c", "k")));
     }
 
@@ -102,7 +102,7 @@ public class StreamTest {
         List<User> users = User.getUsersWithAge(10, 20, 30);
         assertThat(Stream8.getMinAge(users), equalTo(10));
         assertThat(Stream8.getMaxAge(users), equalTo(30));
-        assertThat(Stream8.getAverageAge(users), equalTo((double)(10+20+30)/3));
+        assertThat(Stream8.getAverageAge(users), equalTo((double)(10+20+30)/3));//mapToDouble vs mapToInt tutaj
     }
 
     @Test
@@ -112,7 +112,7 @@ public class StreamTest {
         User maggie = new User("Maggie",false);
         User lisa = new User("Lisa", false);
         List<User> input = asList(homer, bart, maggie, lisa);
-        Map<Boolean, List<User>> result = Stream8.partionUsersByGender(input);
+        Map<Boolean, List<User>> result = Stream8.partionUsersByGender(input);//particioningBy vs grupingBy(tylko 2 grupy w pierwszym?)
         assertThat(result.get(true), containsInAnyOrder(homer, bart));
         assertThat(result.get(false), containsInAnyOrder(maggie, lisa));
     }
@@ -176,7 +176,7 @@ public class StreamTest {
         User maggie = new User("Maggie",false);
         User lisa = new User("Lisa", true);
         List<User> users = asList(homer, bart, maggie, lisa);
-        Optional<User> user = Stream8.findAny(users, "Homer");
+        Optional<User> user = Stream8.findAny(users, "Homer");//czemu findAny i potem filter działa?
         assertTrue(user.isPresent());
     }
 
@@ -209,7 +209,7 @@ public class StreamTest {
         User maggie = new User("Maggie",2);
         User lisa = new User("Lisa", 8);
         List<User> users = asList(homer, bart, maggie, lisa);
-        int sumAge = Stream8.sumAge(users);
+        int sumAge = Stream8.sumAge(users);//ale może być też od razu mapToInt z age'm
         assertThat(sumAge, equalTo(50+12+2+8));
     }
 
@@ -237,20 +237,20 @@ public class StreamTest {
 
     @Test
     public void shouldBeEmptyStream(){
-        Stream<Integer> numberStream =null; //create empty stream
+        Stream<Integer> numberStream = Stream.empty(); //create empty stream
         assertNotNull(numberStream);
     }
 
     @Test
     public void shouldGenerateFirstPrimeNumbers(){
         List<Integer> primeNumbers = Stream8.generateFirst10PrimeNumbers();
-        assertThat(primeNumbers, contains(2,3,5,7,11,13, 17,19, 23, 29));
+        assertThat(primeNumbers, contains(2,3,5,7,11,13, 17,19, 23, 29));//x++ nie działa?
     }
 
     @Test
     public void shouldGenerate10RandomNumbers(){
         List<Integer> randomNumbers = Stream8.generate10RandomNumbers();
-        assertTrue(randomNumbers.size()==10);
+        assertTrue(randomNumbers.size()==10);//zapis metody lambdą - jak?
     }
 
     @Test

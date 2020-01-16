@@ -3,110 +3,116 @@ package academy.elqoo.java8.stream;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.IntSummaryStatistics;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.partitioningBy;
 
 public class Stream8 {
 
     public static List<Integer> returnSquareRoot(List<Integer> numbers){
-        throw new NotImplementedException();
+        return numbers.stream().map(x->Math.sqrt(x.doubleValue())).map(x->x.intValue()).collect(Collectors.toList());
     }
 
     public static List<Integer> getAgeFromUsers(List<User> user){
-        throw new NotImplementedException();
+       return user.stream().map(x->x.getAge()).collect(Collectors.toList());
     }
 
     public static List<Integer> getDistinctAges(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().map(x->x.getAge()).distinct().collect(Collectors.toList());
     }
 
     public static List<User> getLimitedUserList(List<User> users, int limit){
-        throw new NotImplementedException();
+       return users.stream().limit(limit).collect(Collectors.toList());
     }
 
     public static Integer countUsersOlderThen25(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().filter(x->x.getAge() > 25).collect(Collectors.counting()).intValue();
     }
 
     public static List<String> mapToUpperCase(List<String> strings){
-        throw new NotImplementedException();
+        return strings.stream().map(x->x.toUpperCase()).collect(Collectors.toList());
     }
 
     public static Integer sum(List<Integer> integers){
-        throw new NotImplementedException();
+        return integers.stream().reduce((a, b) -> a + b).orElse(0);
     }
 
     public static List<Integer> skip(List<Integer> integers, Integer toSkip){
-        throw new NotImplementedException();
+        return integers.stream().skip(toSkip).collect(Collectors.toList());
     }
 
     public static List<String> getFirstNames(List<String> names){
-        throw new NotImplementedException();
+        return names.stream().map(x-> x.split(" ")).map(x->x[0]).collect(Collectors.toList());
     }
 
     public static List<String> getDistinctLetters(List<String> names){
-        throw new NotImplementedException();
+        return names.stream().map(x->x.split("")).flatMap(x-> Arrays.stream(x)).distinct().collect(Collectors.toList());
     }
 
 
     public static String separateNamesByComma(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().map(x->x.getName()).collect(Collectors.joining(", "));
     }
 
     public static double getAverageAge(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().map(x->x.getAge()).mapToDouble(x->x).average().orElse(0);
     }
 
     public static Integer getMaxAge(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().map(x->x.getAge()).max(Comparator.naturalOrder()).orElse(0);
     }
 
     public static Integer getMinAge(List<User> users) {
-        throw new NotImplementedException();
+        return users.stream().map(x->x.getAge()).min(Comparator.naturalOrder()).orElse(0);
     }
 
     public static Map<Boolean, List<User>> partionUsersByGender(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().collect(partitioningBy(x->x.isMale()));
     }
 
     public static Map<Integer, List<User>> groupByAge(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().collect(Collectors.groupingBy(x->x.getAge()));
     }
 
     public static Map<Boolean, Map<Integer, List<User>>> groupByGenderAndAge(List<User> users){
-        throw new NotImplementedException();
+        Map<Boolean, Map<Integer, List<User>>> usersGrouped = users
+                .stream()
+                .collect(Collectors.groupingBy(x -> x.isMale(),
+                        Collectors.groupingBy(x -> x.getAge())));
+        return usersGrouped;
     }
 
     public static Map<Boolean, Long> countGender(List<User> users){
-        throw new NotImplementedException();
+        Map<Boolean, Long> userSumByGender = users.stream().collect(Collectors.groupingBy(x -> x.isMale(), counting()));
+        return userSumByGender;
     }
 
     public static boolean anyMatch(List<User> users, int age){
-        throw new NotImplementedException();
+        return users.stream().anyMatch(x->x.getAge() == age);
     }
 
     public static boolean noneMatch(List<User> users, int age){
-        throw new NotImplementedException();
+        return users.stream().noneMatch(x->x.getAge() == age);
     }
 
     public static Optional<User> findAny(List<User> users, String name){
-        throw new NotImplementedException();
+        return users.stream().filter(x->x.getName().equals(name)).findAny();
     }
 
     public static List<User> sortByAge(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().sorted(Comparator.comparing(x->x.getAge())).collect(Collectors.toList());
     }
 
     public static Stream<Integer> getBoxedStream(IntStream stream){
-        throw new NotImplementedException();
+        return stream.boxed();
     }
 
     public static List<Integer> generateFirst10PrimeNumbers(){
-        throw new NotImplementedException();
+        return Stream.iterate(2, x -> x + 1).filter(integer -> Stream8.isPrime(integer)).limit(10).collect(Collectors.toList());
     }
 
     public static boolean isPrime(int number) {
@@ -114,19 +120,21 @@ public class Stream8 {
     }
 
     public static List<Integer> generate10RandomNumbers(){
-        throw new NotImplementedException();
+        return IntStream.generate(new Random()::nextInt).limit(10).boxed().collect(Collectors.toList());
     }
 
     public static User findOldest(List<User> users){
-        throw new NotImplementedException();
+        User oldestUser = users.stream().max(Comparator.comparing(x -> x.getAge())).get();
+        return oldestUser;
     }
 
     public static int sumAge(List<User> users){
-        throw new NotImplementedException();
+        return users.stream().map(x->x.getAge()).mapToInt(x->x).sum();
     }
 
     public static IntSummaryStatistics ageSummaryStatistics(List<User> users){
-        throw new NotImplementedException();
+
+    return users.stream().mapToInt(x->x.getAge()).summaryStatistics() ;
     }
 
 }

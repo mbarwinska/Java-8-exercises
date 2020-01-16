@@ -21,42 +21,42 @@ public class LambdaTest {
     @Test
     public void removeStringsWithMoreThanThreeCharacters(){
         List<String> input = asList("This", "is", "java", "8");
-        //input = Lambda.filter(input, s -> s.length()<3)
-;       assertThat(input, contains("is", "8"));
+        input = Lambda.filter(input, s -> s.length()<3);
+        assertThat(input, contains("is", "8"));
     }
 
     @Test
     public void shouldBeExecutedWitingATransaction(){
         TransactionLambda lambda = new TransactionLambda();
-        //Lambda.processWithinTransaction(lambda);
+        Lambda.processWithinTransaction(lambda);//ale może też być w implementacji metody nie runnable tylko transactionLambda
         assertTrue(lambda.isConsumed());
     }
 
     @Test
     public void shouldCreateAString(){
-        String bigString = Lambda.create();
-        assertTrue(bigString.length()>0);
+        String bigString = Lambda.create(()-> "a");
+        assertTrue(bigString.length() > 0);
     }
 
     @Test
     public void extractStringSize(){
         String myString = "This is great";
-        int length = Lambda.getStringLength(myString/* get string length*/);
-        assertTrue(length==13);
+        int length = Lambda.getStringLength(myString, x->x.length());
+        assertTrue(length == 13);
     }
 
     @Test
     public void multiply(){
         int a = 5;
         int b = 6;
-        int result = Lambda.multiply(a,b);
-        assertTrue(result==30);
+        int result = Lambda.multiply(a,b, (x,y) -> a * b);
+        assertTrue(result == 30);
     }
 
     @Test
     public void shouldSortStrings() throws Exception {
         List<String> input = Arrays.asList("C", "F", "A", "D", "B", "E");
-        List<String> result = Lambda.sortStrings(input);
+        List<String> result = Lambda.sortStrings(input, (a,b)-> a.compareTo(b));//dlaczego Comparator.comparing(s->s) działa?
         assertThat(result, is(equalTo(Arrays.asList("A", "B", "C", "D", "E", "F"))));
     }
 
